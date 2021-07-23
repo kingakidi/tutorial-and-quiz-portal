@@ -52,12 +52,14 @@
                     // CHECK FOR NUM 
                     if ($qCQuery->num_rows > 0) {
                     extract($qCQuery->fetch_assoc());
-                    
-                    $qNQuery = $conn->query("SELECT * FROM user_answer WHERE quiz_id = $topic_id AND user_id = $userid");
+                    $userid = $_SESSION['user_id'];
+                    $qNQuery = $conn->query("SELECT * FROM user_answer WHERE quiz_id = $topic_id AND user_answer.user_id = $userid");
                     if (!$qNQuery) {
                         die("FAILED TO VERIFY QUIZ");
                     }else{
+
                         $numQuiz = $qNQuery->num_rows;
+                        // echo $numQuiz ;
                         if ($numQuiz > 0) {
                             echo "<div class='text-center'>
                                 <a href='takequiz.php?q=$topic_id' class='btn btn-success'>View Result</a>

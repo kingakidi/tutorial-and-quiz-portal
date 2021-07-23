@@ -210,7 +210,7 @@
             </div>
             <div class="show-role-status form-group text-center" id="show-role-status"></div>
             <div class="form-group text-right">
-                <button type="submit" class="btn btn-info" id="btn-role-submit">Change Role</button>
+                <button type="submit" class="btn btn-info" id="btn-role-submit">Confirm</button>
             </div>
         </form>';
     }
@@ -232,8 +232,8 @@
                 <label for="role">Selct Activation</label>
                 <select name="role" id="toggle-action" class="form-control">
                     <option value="" selected disabeld>Select Activation</option>
-                    <option value="approved">Activate</option>
-                    <option value="pending">Deactivate</option>
+                    <option value="activated">Activate</option>
+                    <option value="deactivate">Deactivate</option>
                 </select>
             </div>
             <div class="form-group">
@@ -242,20 +242,118 @@
             </div>
             <div class="show-role-status form-group text-center" id="show-role-status"></div>
             <div class="form-group text-right">
-                <button type="submit" class="btn btn-info" id="btn-role-submit">Change Role</button>
+                <button type="submit" class="btn btn-info" id="btn-activation-submit">Confirm </button>
             </div>
         </form>';
     }
+
+
+    // GET ALL QUESTIONS 
+    if (isset($_POST['getAllQuestion'])) {
+       $qQuery  = $conn->query("SELECT * FROM `quiz` LEFT JOIN course on quiz.course_id = course.id JOIN topics ON quiz.topics_id = topics.id");
+       if (!$qQuery) {
+           die(error("Unable to get questions "));
+       }else{
+           if ($qQuery->num_rows > 0) {
+               $sn=1;
+               echo '<table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th>S/N </th>
+                        <th>COURSE</th>
+                        <th>TOPIC</th>
+                        <th>QUESTION</th>
+                        <th>TYPE</th>
+                        <th>DATE</th>
+                    </tr>
+                </thead>
+                <tbody>';
+                while ($row = $qQuery->fetch_assoc()) {
+                    //     echo "<pre>";
+                    //    print_r($row);
+                    //    echo "</pre>";
+                    extract($row);
+                    $course_name = strtoupper($course_name);
+                    $topic_title = strtoupper($topic_title);
+                    echo " <tr>
+                    <td>$sn</td>
+                    <td>$course_name</td>
+                    <td>$topic_title</td>
+                    <td>$question</td>
+                    <td>$question_type</td>
+                    <td>$date</td>
+                    
+                </tr>";
+                    $sn++;
+                }
+                echo "   </tbody>
+                </table>";
+           }else{
+               echo info("NO QUIZ ON THE PORTAL YES");
+           }
+       }
+    }
+
+    // GET ALL SCORES 
+
+    if (isset($_POST['getAllScores'])) {
+       
+        $sUQuery = $conn->query("SELECT DISTINCT user_id FROM user_answer");
+        if (!$sUQuery) {
+            die(error("FAILED TO VERIFY QUIZ TAKERS"));
+        }else{
+            echo '<table class="table table-responsive table-bordered">
+            <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>FULLNAME</th>
+                    <th>EMAIL</th>
+                    <th>QUIZ </th>
+                    <th>SCORE</th>
+                </tr>
+            </thead>';
+            $sn = 1;
+
+            while ($row = $sUQuery->fetch_assoc()) {
+                //    print_r($row);
+                $user_id =  $row['user_id'];
+                $user_email = userEmail($user_id);
+                $user_fullname = ucwords(userFullname($user_id));
+
+                $uQQuery = $conn->query("SELECT quiz_id, SUM(score) FROM user_answer WHERE user_id = $user_id");
+
+                if (!$uQQuery) {
+                    die(error("UNABLET TO GET QUIZ DETAILS ".$conn->error));
+                }else{
+                    
+                    $row = $uQQuery->fetch_assoc();
+                    $score = $row['SUM(score)'];
+                    $quiz_id = $row['quiz_id'];
+                    $quiz_title = strtoupper(getQuizTitle($quiz_id));
+                    // GET THE TOTAL QUESTION ON THE QUIZ 
+                    $qNQuery = $conn->query("SELECT * FROM quiz WHERE topics_id = $quiz_id");
+                        if (!$qNQuery) {
+                            die("FAILED TO VERIFY QUIZ");
+                        }else{
+                            $numQuiz = $qNQuery->num_rows;
+                        }
+                    // END OF QUIZ NUM 
+                    $pScore = ceil(($score / $numQuiz)*100) ."%";
+                    echo "<tr>
+                            <td>$sn</td>
+                            <td>$user_email</td>
+                            <td>$user_fullname</td>
+                            <td>$quiz_title</td>
+                            <td>$pScore</td>
+                        </tr>";
+                     
+                    
+                }
+                $sn++;
+            }
+            echo "<tbody>
+                </tbody>
+            </table>";
+        }
+    }
 ?>
-
-
-     
-    
-
-
-
-
-
-
-
-

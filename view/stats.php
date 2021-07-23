@@ -7,10 +7,10 @@
         <div class="item-link-container" id="item-link-container">
         
                 <a href="?p=stats" class="btn btn-info">USERS</a>
-                <a class="btn btn-info" name="p-link" id="questions">QUESTIONS</a>
-                <a class="btn btn-info" name="p-link" id="quiz-list">QUIZ LIST</a>
-                <a class="btn btn-info" name="p-link" id="quiz-scores">QUIZ SCORES</a>
-                <a class="btn btn-info" name="p-link" id="logs">LOG</a>
+                <a class="btn btn-info p-link" name="p-link" id="questions">QUESTIONS</a>
+                <!-- <a class="btn btn-info p-link" name="p-link" id="quiz-list">QUIZ LIST</a> -->
+                <a class="btn btn-info p-link" name="p-link" id="quiz-scores">QUIZ SCORES</a>
+                <!-- <a class="btn btn-info p-link" name="p-link" id="logs">LOG</a> -->
             
         </div>
         <div class="show-item mt-3" id="show-item">
@@ -63,9 +63,7 @@
                                     <option value='' disabled selected>Select Action</option>
                                     <option value='role'>Change Role</option>
                                     <option value='toggleActivation'>Toggle Activation</option>
-                                    <option value='chart'>View Chart</option>
-                                    <option value='log'>Logs</option>
-                                    <option value='changeEmail'> Change Email </option>
+                                  
                                 </select>
                             </div>
                         </td>
@@ -77,7 +75,7 @@
                 echo ' </tbody>
                 </table>';
             }else{
-                echo "<span class='text-primary'>NO REGISTER ACCOUNT ON THIS SYSTEM</span>";
+                echo "<span class='text-primary'>NO REGISTER ACCOUNT ON THIS SYSTEMp</span>";
             }
         ?>
     </div>

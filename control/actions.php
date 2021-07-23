@@ -63,7 +63,7 @@
                     $db_status = $row['status'];
                     $db_password = $row['password'];
                     
-                    if ($db_status !== 'approved') {
+                    if ($db_status !== 'activated') {
                         echo error("ACCOUNT DISABLED CONTACT ADMIN FOR SUPPORT");
                     }else{
                         if (password_verify($password, $db_password)) {
@@ -197,9 +197,9 @@
        $newContent = html_entity_decode(filter_var($content, FILTER_SANITIZE_STRING));
        $course = clean($course);
        $topic = clean($topic);
-       $content = clean($content);
-       $subTopic = clean($subTopic);
-        echo $subTopic;
+       $content = ($content);
+    //    $subTopic = clean($subto);
+        // echo $subTopic;
         //    CHECK FOR EMPTY FIELDS  
         if (!empty($course) AND !empty($topic) AND !empty($content)) {
             // STRIP AND CHECK CONTENT FIELDS 
@@ -484,6 +484,38 @@
                    die(error("Unable to change user role at the moment")); 
                 }else{
                     echo success("Role change Succcessfully");
+                }
+            }else{
+                echo error("Invalid Password");
+            }
+
+        }else{
+            echo error("All field required ");
+        }
+    
+    }
+
+     // CHANGE USER ACTIVATION
+     if (isset($_POST['changeUserActivation'])) {
+        // print_r($_POST);
+        extract($_POST);
+          // CLEAN
+        $email = clean($email); 
+        $password = clean($password);
+        $status = clean($userStatus);
+       
+        // CHECK FOR EMPTY 
+        if (!empty($email) AND !empty($password) AND !empty($status)) {
+             // CHECK FOR PASSWORD VALIDATION 
+             $loginUserPassword = getUserPassword($_SESSION['user_id']);
+            if (password_verify($password, $loginUserPassword)) {
+                       
+                // CHANGE THE status 
+                $uRQuery = $conn->query("UPDATE register SET register.status = '$status' WHERE email = '$email'");
+                if (!$uRQuery) {
+                   die(error("Unable to change user status at the moment")); 
+                }else{
+                    echo success("Status change Succcessfully");
                 }
             }else{
                 echo error("Invalid Password");

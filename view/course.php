@@ -44,8 +44,10 @@
                             echo "<tr>
                                     <td>$sn </td>
                                     <td>$cName </td>
-                                    <td><button class='btn btn-info' id='$id' name='edit-category'>Edit</button>
-                                </td>
+                                    <td>
+                                        <button class='btn btn-info' id='$id' name='edit-category'>Edit</button>
+                                        <button class='btn btn-danger btn-delete'  data-id='$id'>Delete</button>
+                                    </td>
                                 </tr>
                             ";
                             $sn++;

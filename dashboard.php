@@ -11,7 +11,7 @@
                     include "./view/$page";
                 }else{
                     echo '<div class="text-center text-success font-weight-bold m-5 h5">
-                            Welcome to TUTORIAL PORTAL ADMIN  Section, Kindly user above buttons, to navigate to respective sections
+                            Welcome to TUTORIAL PORTAL ADMIN  Section, Kindly use the above buttons, to navigate to respective sections
                           </div>';
                 }
             ?>

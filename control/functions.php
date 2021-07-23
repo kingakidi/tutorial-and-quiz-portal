@@ -29,6 +29,18 @@
         }
     }
 
+    function userFullname($id){
+        global $conn; 
+        
+        $uEQuery = $conn->query("SELECT * FROM register WHERE id = $id");
+        if (!$uEQuery) {
+            die(error("UNABLE TO VERIFY EMAIL "));
+        }else{
+            $fullname = $uEQuery->fetch_assoc()['fullname'];
+            return $fullname;
+        }
+    }
+
     function getUserPassword($id){
         global $conn; 
         $uPQuery = $conn->query("SELECT * FROM register WHERE id = '$id'");
@@ -37,5 +49,16 @@
         }else{
             $password = $uPQuery->fetch_assoc()['password'];
             return $password;
+        }
+    }
+
+    function getQuizTitle($id){
+        global $conn; 
+        $uPQuery = $conn->query("SELECT * FROM topics WHERE id = '$id'");
+        if (!$uPQuery) {
+            die(error("UNABLE TO VALIDATE YOUR QUIZ TITLE "));
+        }else{
+            $topic_title = $uPQuery->fetch_assoc()['topic_title'];
+            return $topic_title;
         }
     }
